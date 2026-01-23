@@ -1,5 +1,6 @@
 from rest_framework import viewsets, status
-from rest_framework.decorators import action, api_view
+from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 
@@ -8,29 +9,29 @@ from .serializer import InscriptionSerializer
 
 
 class InscriptionViewSet(viewsets.ViewSet):
+    permission_classes = [AllowAny]
 
-    @action(methods=['post'], detail=False, url_path='register')
-    def inscription(self, request):
+    @action(detail=False, methods=['post'], url_path='register')
+    def register(self, request):
         serializer = InscriptionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user_dict = serializer.validated_data
-        user = users(
-            nom=user_dict['nom'],
-            email=user_dict['email'],
-            mot_de_passe=user_dict['mot_de_passe']
+
+        users.objects.create(
+            nom=serializer.validated_data['nom'],
+            email=serializer.validated_data['email'],
+            mot_de_passe=serializer.validated_data['mot_de_passe']
         )
-        user.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response({"message": "Compte créé"}, status=status.HTTP_201_CREATED)
 
 
-# ---------------- LOGIN VIEW ----------------
 @csrf_exempt
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def login_view(request):
     email = request.data.get('email', '').strip()
     mot_de_passe = request.data.get('mot_de_passe', '').strip()
 
-    # Ignore la casse sur l'email et prend le premier utilisateur correspondant
     user = users.objects.filter(email__iexact=email, mot_de_passe=mot_de_passe).first()
 
     if user:
@@ -41,8 +42,6 @@ def login_view(request):
                 "nom": user.nom,
                 "email": user.email
             }
-        }, status=status.HTTP_200_OK)
+        }, status=200)
     else:
-        return Response({
-            "message": "Email ou mot de passe incorrect"
-        }, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"message": "Email ou mot de passe incorrect"}, status=401)

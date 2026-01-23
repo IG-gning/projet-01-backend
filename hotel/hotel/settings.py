@@ -18,9 +18,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-default-key")
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
-    os.environ.get("RENDER_EXTERNAL_HOSTNAME"),
+    "localhost",
+    "127.0.0.1",
+    ".onrender.com",
     "front-end-mu-six.vercel.app",
 ]
+
+
 
 # --------------------------
 # Applications installées
@@ -47,7 +51,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",
     ],
 }
 
@@ -71,6 +75,9 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "https://front-end-mu-six.vercel.app",  # ton frontend Vercel
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 CSRF_TRUSTED_ORIGINS = [
     "https://front-end-mu-six.vercel.app",
@@ -144,6 +151,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # --------------------------
 # Sécurité supplémentaire
 # --------------------------
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
