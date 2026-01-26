@@ -1,11 +1,9 @@
-from django.urls import path, include
-from rest_framework import routers
+from django.urls import path
 from .views import InscriptionViewSet, login_view
 
-router = routers.DefaultRouter()
-router.register(r'ins', InscriptionViewSet, basename='ins')
+inscription_register = InscriptionViewSet.as_view({'post': 'register'})
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('register/', inscription_register, name='register'),
     path('login/', login_view, name='login'),
 ]

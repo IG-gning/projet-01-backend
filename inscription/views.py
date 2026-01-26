@@ -42,6 +42,9 @@ def login_view(request):
                 "nom": user.nom,
                 "email": user.email
             }
-        }, status=200)
+        }, status=status.HTTP_200_OK)
     else:
-        return Response({"message": "Email ou mot de passe incorrect"}, status=401)
+        return Response(
+            {"message": "Email ou mot de passe incorrect"},
+            status=status.HTTP_401_UNAUTHORIZED
+        )

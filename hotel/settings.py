@@ -20,7 +20,7 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    ".onrender.com",
+    "projet-01-backend-1.onrender.com",
     "front-end-mu-six.vercel.app",
 ]
 
