@@ -38,9 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'inscription',
+    'forms_app',
+    'messages_app',
+    'hotels',
+    'entrees',
+
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt",
+
 ]
 
 # --------------------------
@@ -77,6 +83,9 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 CSRF_TRUSTED_ORIGINS = [
