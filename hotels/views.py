@@ -9,19 +9,16 @@ from .serializers import HotelSerializer
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def listeHotel(request):
-    hotels = Hotel.objects.all()
-    serializer = HotelSerializer(hotels, many=True)
+    hotels = Hotel.objects.all().order_by('-created_at')
+    serializer = HotelSerializer(hotels, many=True, context={'request': request})
     return Response(serializer.data)
 
+# POST ajouter un hôtel
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def addHotel(request):
-    print("Data reçue :", request.data)
-    serializer = HotelSerializer(data=request.data)
+    serializer = HotelSerializer(data=request.data, context={'request': request})
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=201)
-    else:
-        print("Erreur serializer :", serializer.errors)
-        return Response(serializer.errors, status=400)
-
+    return Response(serializer.errors, status=400)

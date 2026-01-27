@@ -1,10 +1,11 @@
 """
-Django settings pour Render + frontend Vercel
+Django settings pour Render + frontend Vercel + Cloudinary
 """
 
 from pathlib import Path
 import os
 import dj_database_url
+import cloudinary
 
 # --------------------------
 # Chemins
@@ -15,7 +16,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Sécurité
 # --------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-default-key")
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+
+
+# Nouveau (temporaire pour debug) :
+DEBUG = True
+
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -23,8 +28,6 @@ ALLOWED_HOSTS = [
     "projet-01-backend-1.onrender.com",
     "front-end-mu-six.vercel.app",
 ]
-
-
 
 # --------------------------
 # Applications installées
@@ -47,6 +50,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
 
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 # --------------------------
@@ -79,14 +84,9 @@ MIDDLEWARE = [
 # CORS et CSRF
 # --------------------------
 CORS_ALLOWED_ORIGINS = [
-    "https://front-end-mu-six.vercel.app",  # ton frontend Vercel
+    "https://front-end-mu-six.vercel.app",
 ]
-
 CORS_ALLOW_ALL_ORIGINS = True
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 
 CSRF_TRUSTED_ORIGINS = [
     "https://front-end-mu-six.vercel.app",
@@ -152,10 +152,13 @@ USE_I18N = True
 USE_TZ = True
 
 # --------------------------
-# Fichiers statiques
+# Fichiers statiques et media
 # --------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # --------------------------
 # Sécurité supplémentaire
@@ -163,3 +166,18 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
+
+cloudinary.config(
+    cloud_name='dtsfv5tfm',
+    api_key='157261688994592',
+    api_secret='EglL47pRqv6-nUlYVtYOadKiJ5U',
+    secure=True
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dtsfv5tfm',
+    'API_KEY': '157261688994592',
+    'API_SECRET': 'EglL47pRqv6-nUlYVtYOadKiJ5U',
+}
