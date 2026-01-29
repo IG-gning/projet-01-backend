@@ -5,7 +5,7 @@ Django settings pour Render + frontend Vercel + Cloudinary
 from pathlib import Path
 import os
 import dj_database_url
-import cloudinary
+
 
 # --------------------------
 # Chemins
@@ -167,6 +167,7 @@ SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
+import cloudinary
 cloudinary.config(
     cloud_name='dtsfv5tfm',
     api_key='157261688994592',
